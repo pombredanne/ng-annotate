@@ -1,38 +1,38 @@
 "use strict";
 
 // long form
-angular.module("MyMod").controller("MyCtrl", function($scope, $timeout) {
-});
+angular.module("MyMod").controller("MyCtrl", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
 
 // w/ dependencies
-angular.module("MyMod", ["OtherMod"]).controller("MyCtrl", function($scope, $timeout) {
-});
+angular.module("MyMod", ["OtherMod"]).controller("MyCtrl", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
 
 // simple
-myMod.controller("foo", function($scope, $timeout) {
-});
-myMod.service("foo", function($scope, $timeout) {
-});
-myMod.factory("foo", function($scope, $timeout) {
-});
-myMod.directive("foo", function($scope, $timeout) {
-});
-myMod.filter("foo", function($scope, $timeout) {
-});
-myMod.animation("foo", function($scope, $timeout) {
-});
-myMod.invoke("foo", function($scope, $timeout) {
-});
+myMod.controller("foo", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
+myMod.service("foo", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
+myMod.factory("foo", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
+myMod.directive("foo", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
+myMod.filter("foo", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
+myMod.animation("foo", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
+myMod.invoke("foo", ['$scope', '$timeout', function($scope, $timeout) {
+}]);
 
 // implicit config function
-angular.module("MyMod", function($interpolateProvider) {});
-angular.module("MyMod", ["OtherMod"], function($interpolateProvider) {});
-angular.module("MyMod", ["OtherMod"], function($interpolateProvider) {}).controller("foo", function($scope) {});
+angular.module("MyMod", ['$interpolateProvider', function($interpolateProvider) {}]);
+angular.module("MyMod", ["OtherMod"], ['$interpolateProvider', function($interpolateProvider) {}]);
+angular.module("MyMod", ["OtherMod"], ['$interpolateProvider', function($interpolateProvider) {}]).controller("foo", ['$scope', function($scope) {}]);
 
 // object property
 var myObj = {};
 myObj.myMod = angular.module("MyMod");
-myObj.myMod.controller("foo", function($scope, $timeout) { a });
+myObj.myMod.controller("foo", ['$scope', '$timeout', function($scope, $timeout) { a }]);
 
 // no dependencies => no need to wrap the function in an array
 myMod.controller("foo", function() {
@@ -51,40 +51,40 @@ myMod.invoke("foo", function() {
 });
 
 // run, config don't take names
-myMod.run(function($scope, $timeout) {
-});
-angular.module("MyMod").run(function($scope) {
-});
-myMod.config(function($scope, $timeout) {
-});
+myMod.run(['$scope', '$timeout', function($scope, $timeout) {
+}]);
+angular.module("MyMod").run(['$scope', function($scope) {
+}]);
+myMod.config(['$scope', '$timeout', function($scope, $timeout) {
+}]);
 angular.module("MyMod").config(function() {
 });
 
 // directive return object
-myMod.directive("foo", function($scope) {
+myMod.directive("foo", ['$scope', function($scope) {
     return {
-        controller: function($scope, $timeout) {
+        controller: ['$scope', '$timeout', function($scope, $timeout) {
             bar;
-        }
+        }]
     }
-});
-myMod.directive("foo", function($scope) {
+}]);
+myMod.directive("foo", ['$scope', function($scope) {
     return {
         controller: function() {
             bar;
         }
     }
-});
+}]);
 
 // provider, provider $get
-myMod.provider("foo", function($scope) {
-    this.$get = function($scope, $timeout) {
+myMod.provider("foo", ['$scope', function($scope) {
+    this.$get = ['$scope', '$timeout', function($scope, $timeout) {
         bar;
-    };
-    self.$get = function($scope) {};
-    that.$get = function($scope) {};
+    }];
+    self.$get = ['$scope', function($scope) {}];
+    that.$get = ['$scope', function($scope) {}];
     ignore.$get = function($scope) {};
-});
+}]);
 myMod.provider("foo", function() {
     this.$get = function() {
         bar;
@@ -92,9 +92,9 @@ myMod.provider("foo", function() {
 });
 myMod.provider("foo", function() {
     return {
-        $get: function($scope, $timeout) {
+        $get: ['$scope', '$timeout', function($scope, $timeout) {
             bar;
-        }};
+        }]};
 });
 myMod.provider("foo", function() {
     return {
@@ -103,9 +103,9 @@ myMod.provider("foo", function() {
         }};
 });
 myMod.provider("foo", {
-    $get: function($scope, $timeout) {
+    $get: ['$scope', '$timeout', function($scope, $timeout) {
         bar;
-    }
+    }]
 });
 myMod.provider("foo", {
     $get: function() {
@@ -114,69 +114,69 @@ myMod.provider("foo", {
 });
 
 // chaining
-myMod.directive("foo", function($a, $b) {
+myMod.directive("foo", ['$a', '$b', function($a, $b) {
     a;
-}).factory("foo", function() {
+}]).factory("foo", function() {
         b;
-    }).config(function($c) {
+    }).config(['$c', function($c) {
         c;
-    }).filter("foo", function($d, $e) {
+    }]).filter("foo", ['$d', '$e', function($d, $e) {
         d;
-    }).animation("foo", function($f, $g) {
+    }]).animation("foo", ['$f', '$g', function($f, $g) {
         e;
-    });
+    }]);
 
-angular.module("MyMod").directive("foo", function($a, $b) {
+angular.module("MyMod").directive("foo", ['$a', '$b', function($a, $b) {
     a;
-}).provider("foo", function() {
+}]).provider("foo", function() {
         return {
-            $get: function($scope, $timeout) {
+            $get: ['$scope', '$timeout', function($scope, $timeout) {
                 bar;
-            }};
+            }]};
     }).value("foo", "bar")
     .constant("foo", "bar")
     .bootstrap(element, [], {})
     .factory("foo", function() {
         b;
-    }).config(function($c) {
+    }).config(['$c', function($c) {
         c;
-    }).filter("foo", function($d, $e) {
+    }]).filter("foo", ['$d', '$e', function($d, $e) {
         d;
-    }).animation("foo", function($f, $g) {
+    }]).animation("foo", ['$f', '$g', function($f, $g) {
         e;
-    }).invoke("foo", function($h, $i) {
+    }]).invoke("foo", ['$h', '$i', function($h, $i) {
         f;
-    });
+    }]);
 
 // $provide
-angular.module("MyMod").directive("foo", function($a, $b) {
-    $provide.decorator("foo", function($scope, $timeout) {
+angular.module("MyMod").directive("foo", ['$a', '$b', function($a, $b) {
+    $provide.decorator("foo", ['$scope', '$timeout', function($scope, $timeout) {
         a;
-    });
-    $provide.factory("bar", function($timeout, $scope) {
+    }]);
+    $provide.factory("bar", ['$timeout', '$scope', function($timeout, $scope) {
         b;
-    });
-    $provide.animation("baz", function($scope, $timeout) {
+    }]);
+    $provide.animation("baz", ['$scope', '$timeout', function($scope, $timeout) {
         c;
-    });
-});
+    }]);
+}]);
 
 
 // all the patterns below matches only when we're inside a detected angular module
 angular.module("MyMod").directive("pleasematchthis", function() {
 
     // $httpProvider
-    $httpProvider.interceptors.push(function($scope) { a });
-    $httpProvider.responseInterceptors.push(function($scope) { a }, function(a, b) { b }, function() { c });
+    $httpProvider.interceptors.push(['$scope', function($scope) { a }]);
+    $httpProvider.responseInterceptors.push(['$scope', function($scope) { a }], ['a', 'b', function(a, b) { b }], function() { c });
 
     // $routeProvider
     $routeProvider.when("path", {
-        controller: function($scope) { a }
+        controller: ['$scope', function($scope) { a }]
     }).when("path2", {
-            controller: function($scope) { b },
+            controller: ['$scope', function($scope) { b }],
             resolve: {
                 zero: function() { a },
-                more: function($scope, $timeout) { b },
+                more: ['$scope', '$timeout', function($scope, $timeout) { b }],
                 something: "else",
             },
             dontAlterMe: function(arg) {},
@@ -186,51 +186,51 @@ angular.module("MyMod").directive("pleasematchthis", function() {
     $stateProvider.state("myState", {
         resolve: {
             simpleObj: function() { a },
-            promiseObj: function($scope, $timeout) { b },
+            promiseObj: ['$scope', '$timeout', function($scope, $timeout) { b }],
             translations: "translations",
         },
         views: {
             viewa: {
-                controller: function($scope, myParam) {},
-                controllerProvider: function($stateParams) {},
-                templateProvider: function($scope) {},
+                controller: ['$scope', 'myParam', function($scope, myParam) {}],
+                controllerProvider: ['$stateParams', function($stateParams) {}],
+                templateProvider: ['$scope', function($scope) {}],
                 dontAlterMe: function(arg) {},
                 resolve: {
-                    myParam: function($stateParams) {
+                    myParam: ['$stateParams', function($stateParams) {
                         return $stateParams.paramFromDI;
-                    }
+                    }]
                 },
             },
             viewb: {
                 dontAlterMe: function(arg) {},
-                templateProvider: function($scope) {},
-                controller: function($scope) {},
+                templateProvider: ['$scope', function($scope) {}],
+                controller: ['$scope', function($scope) {}],
             },
             dontAlterMe: null,
         },
-        controller: function($scope, simpleObj, promiseObj, translations) { c },
-        controllerProvider: function($scope) { g },
-        templateProvider: function($scope) { h },
-        onEnter: function($scope) { d },
-        onExit: function($scope) { e },
+        controller: ['$scope', 'simpleObj', 'promiseObj', 'translations', function($scope, simpleObj, promiseObj, translations) { c }],
+        controllerProvider: ['$scope', function($scope) { g }],
+        templateProvider: ['$scope', function($scope) { h }],
+        onEnter: ['$scope', function($scope) { d }],
+        onExit: ['$scope', function($scope) { e }],
         dontAlterMe: function(arg) { f },
     }).state("myState2", {
-            controller: function($scope) {},
+            controller: ['$scope', function($scope) {}],
         }).state({
             name: "myState3",
-            controller: function($scope, simpleObj, promiseObj, translations) { c },
+            controller: ['$scope', 'simpleObj', 'promiseObj', 'translations', function($scope, simpleObj, promiseObj, translations) { c }],
         });
-    $urlRouterProvider.when("/", function($match) { a; });
+    $urlRouterProvider.when("/", ['$match', function($match) { a; }]);
     $urlRouterProvider.otherwise("", function(a) { a; });
-    $urlRouterProvider.rule(function(a) { a; }).anything().when("/", function($location) { a; });
+    $urlRouterProvider.rule(function(a) { a; }).anything().when("/", ['$location', function($location) { a; }]);
 
     // angular ui / ui-bootstrap $modal
     $modal.open({
         templateUrl: "str",
-        controller: function($scope) {},
+        controller: ['$scope', function($scope) {}],
         resolve: {
-            items: function(MyService) {},
-            data: function(a, b) {},
+            items: ['MyService', function(MyService) {}],
+            data: ['a', 'b', function(a, b) {}],
             its: 42,
         },
         donttouch: function(me) {},
@@ -315,136 +315,154 @@ foobar.irrespective("dontmatchthis", function() {
 });
 
 // explicit annotations
-var x = /* @ngInject */ function($scope) {
-};
+var x = /* @ngInject */ ['$scope', function($scope) {
+}];
 
 var obj = {};
-obj.bar = /*@ngInject*/ function($scope) {};
+obj.bar = /*@ngInject*/ ['$scope', function($scope) {}];
 
 obj = {
-    controller: /*@ngInject*/ function($scope) {},
+    controller: /*@ngInject*/ ['$scope', function($scope) {}],
 };
 
 obj = /*@ngInject*/ {
-    foo: function(a) {},
-    bar: function(b, c) {},
+    foo: ['a', function(a) {}],
+    bar: ['b', 'c', function(b, c) {}],
     val: 42,
     inner: {
-        circle: function(d) {},
+        circle: ['d', function(d) {}],
         alalalala: "long",
     },
-    nest: { many: {levels: function(x) {}}},
+    nest: { many: {levels: ['x', function(x) {}]}},
     but: { onlythrough: ["object literals", {donttouch: function(me) {}}]},
 };
 
 obj = {
     /*@ngInject*/
-    foo: function(a) {},
+    foo: ['a', function(a) {}],
     bar: function(b, c) {},
 };
 
 /*@ngInject*/
 obj = {
-    foo: function(a) {},
-    bar: function(b, c) {},
+    foo: ['a', function(a) {}],
+    bar: ['b', 'c', function(b, c) {}],
     val: 42,
     inner: {
-        circle: function(d) {},
+        circle: ['d', function(d) {}],
         alalalala: "long",
     },
-    nest: { many: {levels: function(x) {}}},
+    nest: { many: {levels: ['x', function(x) {}]}},
     but: { onlythrough: ["object literals", {donttouch: function(me) {}}]},
 };
 
 /*@ngInject*/
 var obj = {
-    foo: function(a) {},
-    bar: function(b, c) {},
+    foo: ['a', function(a) {}],
+    bar: ['b', 'c', function(b, c) {}],
     val: 42,
     inner: {
-        circle: function(d) {},
+        circle: ['d', function(d) {}],
         alalalala: "long",
     },
-    nest: { many: {levels: function(x) {}}},
+    nest: { many: {levels: ['x', function(x) {}]}},
     but: { onlythrough: ["object literals", {donttouch: function(me) {}}]},
 };
 
 // @ngInject
 function foo($scope) {
 }
+foo.$inject = ['$scope'];
 
 // @ngInject
 // otherstuff
 function Foo($scope) {
 }
+Foo.$inject = ['$scope'];
 
 // @ngInject
 // has trailing semicolon
 var foo1 = function($scope) {
 };
+foo1.$inject = ['$scope'];
 
 // @ngInject
 // lacks trailing semicolon
 var foo2 = function($scope) {
 }
+foo2.$inject = ['$scope'];
 
 // @ngInject
 // has trailing semicolon
 bar.foo1 = function($scope) {
 };
+bar.foo1.$inject = ['$scope'];
 
 // @ngInject
 // lacks trailing semicolon
 bar.foo2 = function($scope) {
 }
+bar.foo2.$inject = ['$scope'];
 
 // let's zip-zag indentation to make sure that the $inject array lines up properly
     // @ngInject
     function foo1($scope) {}
+    foo1.$inject = ['$scope'];
         // @ngInject
         function foo2($scope) {
         }
+        foo2.$inject = ['$scope'];
 /* @ngInject */ function foo3($scope) {}
+foo3.$inject = ['$scope'];
             /* @ngInject */ function foo4($scope) {
             }
+            foo4.$inject = ['$scope'];
 
     // @ngInject
     var foo1 = function($scope) {
     };
+    foo1.$inject = ['$scope'];
         // @ngInject
         var foo2 = function($scope) {};
+        foo2.$inject = ['$scope'];
 // @ngInject
 var foo3 = function($scope) {
 }
+foo3.$inject = ['$scope'];
             // @ngInject
             var foo4 = function($scope) {}
+            foo4.$inject = ['$scope'];
 
     /* @ngInject */ var foo5 = function($scope) {
     };
+    foo5.$inject = ['$scope'];
         /* @ngInject */var foo6 = function($scope) {};
+        foo6.$inject = ['$scope'];
 /* @ngInject */var foo7 = function($scope) {
 }
+foo7.$inject = ['$scope'];
             /* @ngInject */var foo8 = function($scope) {}
+            foo8.$inject = ['$scope'];
 
 
 // adding an explicit annotation where it isn't needed should work fine
-myMod.controller("foo", /*@ngInject*/ function($scope, $timeout) {
-});
+myMod.controller("foo", /*@ngInject*/ ['$scope', '$timeout', function($scope, $timeout) {
+}]);
 
 
 
 // explicit annotations using ngInject() instead of /*@ngInject*/
-var x = ngInject(function($scope) {});
+var x = ngInject(['$scope', function($scope) {}]);
 
 obj = ngInject({
-    foo: function(a) {},
-    bar: function(b, c) {},
+    foo: ['a', function(a) {}],
+    bar: ['b', 'c', function(b, c) {}],
     val: 42,
     inner: {
-        circle: function(d) {},
+        circle: ['d', function(d) {}],
         alalalala: "long",
     },
-    nest: { many: {levels: function(x) {}}},
+    nest: { many: {levels: ['x', function(x) {}]}},
     but: { onlythrough: ["object literals", {donttouch: function(me) {}}]},
 });
 
@@ -462,33 +480,35 @@ myMod.controller("donttouchme", function() {
 
 
 // IIFE-jumping (primarily for compile-to-JS langs)
-angular.module("MyMod").directive("foo", function($a, $b) {
+angular.module("MyMod").directive("foo", ['$a', '$b', function($a, $b) {
     $modal.open({
         resolve: {
             collection: (function(_this) {
-                return function($c) {
-                };
+                return ['$c', function($c) {
+                }];
             })(this),
         },
     });
-});
+}]);
 
 var x = /*@ngInject*/ (function() {
-    return function($a) {
-    };
+    return ['$a', function($a) {
+    }];
 })();
 
 
 // reference support
 function MyCtrl1(a, b) {
 }
+MyCtrl1.$inject = ['a', 'b'];
 if (true) {
     // proper scope analysis including shadowing
-    let MyCtrl1 = function(c) {
-    }
+    let MyCtrl1 = ['c', function(c) {
+    }]
     angular.module("MyMod").directive("foo", MyCtrl1);
 }
 angular.module("MyMod").controller("bar", MyCtrl1);
 function MyCtrl2(z) {
 }
+MyCtrl2.$inject = ['z'];
 funcall(/*@ngInject*/ MyCtrl2); // explicit annotation on reference flows back to definition
